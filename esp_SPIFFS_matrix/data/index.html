@@ -1,0 +1,130 @@
+<html>
+
+	<head>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<style>
+
+			.container {
+				width:calc(30px * 8);
+			}
+
+			.button {
+				width:30px;
+				height:30px;
+				background:black;
+				border:solid white;
+				box-sizing: border-box;
+				float:left;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class="container">
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+			<div class="button" style="background-color:black"></div>
+		</div>
+
+		<script>
+
+			let buttons = document.getElementsByClassName('button');
+
+			for(let i=0; i<buttons.length; i++) {
+				console.log(i)
+				buttons[i].addEventListener('click', function() {
+					let x = i%8;
+					let y = Math.floor(i/8);
+					
+					let b = buttons[i];
+
+					if(b.style.backgroundColor == "red") {
+						b.style.backgroundColor = "green";
+					} else if(b.style.backgroundColor == "green") {
+						b.style.backgroundColor = "blue";
+					} else if(b.style.backgroundColor == "blue") {
+						b.style.backgroundColor = "black";
+					} else {
+						b.style.backgroundColor = "red";
+					}
+
+					// post x,y,color
+					fetch('/', {method:'post', 
+								headers: {'Content-Type':'application/x-www-form-urlencoded'}, 
+								body: 'x='+x+'&y='+y+'&color='+b.style.backgroundColor
+						});
+
+				});	
+			}
+
+		</script>
+
+	</body>
+
+</html>
