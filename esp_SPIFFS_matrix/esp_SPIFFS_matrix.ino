@@ -1,16 +1,14 @@
-/*********
-  Rui Santos
-  Complete project details at https://randomnerdtutorials.com  
-*********/
+
 
 // Import required libraries
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
-
 #include <Adafruit_GFX.h>
 #include <FastLED.h>
 #include <FastLED_NeoMatrix.h>
+
+
 #define PIN 21
 #define mw 8 //amount of pixels width
 #define mh 8 //amount of pixels height
@@ -18,45 +16,16 @@
 CRGB matrixleds[NUMMATRIX];
 int cx = 0;
 int cy = 0;
-FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, 
-  NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
-    NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
-
-
-
+FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT + NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
 
 // Replace with your network credentials
 const char* ssid = "labLAN";
 const char* password = "password";
 
-// Set LED GPIO
-const int ledPin = 13;
-// Stores LED state
-String ledState;
-const char* PARAM_MESSAGE = "message";
+
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
 
-// Replaces placeholder with LED state value
-String processor(const String& var){
-  Serial.println(var);
-  if(var == "STATE"){
-    if(digitalRead(ledPin)){
-      ledState = "ON";
-    }
-    else{
-      ledState = "OFF";
-    }
-    
-    Serial.print(ledState);
-    return ledState;
-  }
-  if(var == "STATE2") {
-    return "HELLO";
-
-  }
-  return String();
-}
 
 
  
@@ -66,7 +35,7 @@ void setup(){
   FastLED.addLeds<NEOPIXEL,PIN>(matrixleds, NUMMATRIX); 
   matrix->begin();
   matrix->setBrightness(255);
-  pinMode(ledPin, OUTPUT);
+  
   Serial.println("started");
   // Initialize SPIFFS
   if(!SPIFFS.begin(true)){
