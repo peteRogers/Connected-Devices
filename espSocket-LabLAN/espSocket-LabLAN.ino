@@ -7,6 +7,30 @@ const char* password = "password";
  
 // Globals
 WebSocketsServer webSocket = WebSocketsServer(80);
+
+void setup() {
+ pinMode(13, OUTPUT);
+  // Start Serial port
+  Serial.begin(115200);
+  delay(4000);
+  // Connect to access point
+  Serial.println("Connecting");
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED ) {
+    delay(500);
+    Serial.print(".");
+  }
+ 
+  // Print our IP address
+  Serial.println("Connected!");
+  Serial.print("My IP address: ");
+  Serial.println(WiFi.localIP());
+  
+  // Start WebSocket server and assign callback
+  webSocket.begin();
+  webSocket.onEvent(onWebSocketEvent);
+  //digitalWrite(13, HIGH);
+}
  
 // Called when receiving any WebSocket message
 void onWebSocketEvent(uint8_t num,
@@ -35,7 +59,12 @@ void onWebSocketEvent(uint8_t num,
     // Echo text message back to client
     case WStype_TEXT:
       Serial.printf("[%u] Text: %s\n", num, payload);
-     // webSocket.sendTXT(num, payload);
+      if ( strcmp((char *)payload, "on") == 0 ) {
+        digitalWrite(13, HIGH);
+      }
+      if ( strcmp((char *)payload, "off") == 0 ) {
+        digitalWrite(13, LOW);
+      }
       break;
  
     // For everything else: do nothing
@@ -50,29 +79,7 @@ void onWebSocketEvent(uint8_t num,
   }
 }
  
-void setup() {
- pinMode(13, OUTPUT);
-  // Start Serial port
-  Serial.begin(115200);
- 
-  // Connect to access point
-  Serial.println("Connecting");
-  WiFi.begin(ssid, password);
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay(500);
-    Serial.print(".");
-  }
- 
-  // Print our IP address
-  Serial.println("Connected!");
-  Serial.print("My IP address: ");
-  Serial.println(WiFi.localIP());
-  
-  // Start WebSocket server and assign callback
-  webSocket.begin();
-  webSocket.onEvent(onWebSocketEvent);
-  digitalWrite(13, HIGH);
-}
+
  
 void loop() {
  
