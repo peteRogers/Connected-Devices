@@ -3,10 +3,10 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
  
-const char* ssid = "labLAN";
-const char* password =  "password";
+const char* ssid = "VM981001-2G";
+const char* password =  "susieAmy";
  
-const String endpoint = "http://api.openweathermap.org/data/2.5/weather?q=Blackheath&APPID=";
+const String endpoint = "http://api.openweathermap.org/data/2.5/weather?id=6947041&APPID=";
 const String key = "ebf1fe041a7eabcc11f8e1bc1641d10d";
  
 void setup() {
@@ -30,8 +30,8 @@ void loop() {
  
     HTTPClient http;
  
-   // http.begin(endpoint + key); //Specify the URL
-   http.begin("http://api.erg.kcl.ac.uk/AirQuality/Daily/MonitoringIndex/Latest/SiteCode=LW1/Json");
+    http.begin(endpoint + key); //Specify the URL
+  // http.begin("http://api.erg.kcl.ac.uk/AirQuality/Daily/MonitoringIndex/Latest/SiteCode=LW1/Json");
     int httpCode = http.GET();  //Make the request
  
     if (httpCode > 0) { //Check for the returning code
@@ -50,7 +50,9 @@ void loop() {
 //        JsonVariant la = object.getMember("LocalAuthority");
 //        JsonVariant site = la.getMember("Site");
 //        JsonVariant spec = site.getMember("Species");
-        int d = doc["DailyAirQualityIndex"]["LocalAuthority"]["Site"]["Species"]["@AirQualityIndex"];
+       // int d = doc["DailyAirQualityIndex"]["LocalAuthority"]["Site"]["Species"]["@AirQualityIndex"];
+       String d = doc["rain"]["1h"];
+   
         
         //int d = object[String("@AirQualityIndex")];
         Serial.println(d);

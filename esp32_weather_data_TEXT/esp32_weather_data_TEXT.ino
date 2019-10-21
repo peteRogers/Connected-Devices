@@ -24,8 +24,8 @@ FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1,
   NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
     NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
 
-const char* ssid = "VM981001-2G";
-const char* password =  "susieAmy";
+const char* ssid = "LabLAN";
+const char* password =  "password";
  String cString = "";
 const String endpoint = "http://api.openweathermap.org/data/2.5/weather?id=6947041&APPID=";
 const String key = "ebf1fe041a7eabcc11f8e1bc1641d10d";
