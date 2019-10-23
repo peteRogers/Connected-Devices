@@ -3,10 +3,7 @@
 #include <ESP32Servo.h> 
 
 Servo myservo; 
-
-
 int servoPin = 12;      
-
 int potPin = 34;       
 int ADC_Max = 4096;    
                        
