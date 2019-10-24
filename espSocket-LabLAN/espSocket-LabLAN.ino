@@ -2,17 +2,15 @@
 #include <WebSocketsServer.h>
  
 // Constants
-const char* ssid = "labLAN";
-const char* password = "password";
+const char* ssid = "VM981001-2G";
+const char* password = "susieAmy";
  
 // Globals
 WebSocketsServer webSocket = WebSocketsServer(80);
 
 void setup() {
- pinMode(13, OUTPUT);
   // Start Serial port
   Serial.begin(115200);
-  delay(4000);
   // Connect to access point
   Serial.println("Connecting");
   WiFi.begin(ssid, password);
@@ -20,7 +18,6 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
- 
   // Print our IP address
   Serial.println("Connected!");
   Serial.print("My IP address: ");
@@ -29,7 +26,7 @@ void setup() {
   // Start WebSocket server and assign callback
   webSocket.begin();
   webSocket.onEvent(onWebSocketEvent);
-  //digitalWrite(13, HIGH);
+ 
 }
  
 // Called when receiving any WebSocket message
@@ -52,22 +49,18 @@ void onWebSocketEvent(uint8_t num,
         IPAddress ip = webSocket.remoteIP(num);
         Serial.printf("[%u] Connection from ", num);
         Serial.println(ip.toString());
-        webSocket.sendTXT(num, "20");
+        webSocket.sendTXT(num, ".");
       }
       break;
  
-    // Echo text message back to client
+    // Where we receive data from the socket
     case WStype_TEXT:
+      //webSocket.sendTXT(num, ".");
       Serial.printf("[%u] Text: %s\n", num, payload);
-      if ( strcmp((char *)payload, "on") == 0 ) {
-        digitalWrite(13, HIGH);
-      }
-      if ( strcmp((char *)payload, "off") == 0 ) {
-        digitalWrite(13, LOW);
-      }
+      
       break;
  
-    // For everything else: do nothing
+    // For everything else: do nothing - JUST IGNORE
     case WStype_BIN:
     case WStype_ERROR:
     case WStype_FRAGMENT_TEXT_START:
