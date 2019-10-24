@@ -2,6 +2,9 @@
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
+#include <ESP32Servo.h>
+Servo myservo;
+int servoPin = 12;
 
 // Network credentials
 const char* ssid = "labLAN";
@@ -20,6 +23,9 @@ void setup(){
   // Serial port for debugging purposes
   Serial.begin(115200);
   pinMode(ledPin, OUTPUT);
+  myservo.setPeriodHertz(50); 
+  myservo.attach(servoPin, 500, 2400); 
+  
   Serial.println("started");
   // Initialize SPIFFS
   if(!SPIFFS.begin(true)){
@@ -41,6 +47,8 @@ void setup(){
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
+
+  
   
   // Route to load style.css file
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -58,6 +66,20 @@ void setup(){
     digitalWrite(ledPin, LOW);    
     request->send(SPIFFS, "/index.html", String(), false, processor);
   });
+
+   server.on("/left", HTTP_GET, [](AsyncWebServerRequest *request){
+    Serial.println("LEFT"); 
+    myservo.write(15);  
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+  });
+
+   server.on("/right", HTTP_GET, [](AsyncWebServerRequest *request){
+    Serial.println("RIGHT");
+    myservo.write(155);   
+    request->send(SPIFFS, "/index.html", String(), false, processor);
+  });
+
+  
   
   //route to get message from input
   server.on("/message", HTTP_GET, [] (AsyncWebServerRequest *request) {
