@@ -25,7 +25,7 @@ const char* ssid = "labLAN";
 const char* password =  "password";
 String cString = "";
 
-const String endpoint = "http://api.openweathermap.org/data/2.5/forecast?id=6947041&cnt=5&units=metric&APPID=";
+const String endpoint = "http://api.openweathermap.org/data/2.5/forecast?id=6947041&cnt=15&units=metric&APPID=";
 const String key = "ebf1fe041a7eabcc11f8e1bc1641d10d";
  
 void setup() {
@@ -55,7 +55,7 @@ void loop() {
             String payload = http.getString();
             Serial.println(payload);
              
-            DynamicJsonDocument doc(4096);
+            DynamicJsonDocument doc(61440);
             deserializeJson(doc, payload);
             
             for(int i = 0; i < doc["list"].size(); i ++){
@@ -66,10 +66,7 @@ void loop() {
               
             }
           }
-     
-        else {
-         // Serial.println("Error on HTTP request");
-        }
+
      
         http.end(); //Free the resources
   }
