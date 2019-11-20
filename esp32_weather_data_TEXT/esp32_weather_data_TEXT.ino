@@ -7,7 +7,7 @@
 
 #define PIN 21
 
-long del = -60000;
+long del = -30000;
 
 #define mw 8 //amount of pixels width
 #define mh 8 //amount of pixels height
@@ -21,11 +21,11 @@ CRGB matrixleds[NUMMATRIX];
 
 FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
 
-const char* ssid = "labLAN";
+const char* ssid = "largePrinter";
 const char* password =  "password";
 String cString = "";
 
-const String endpoint = "http://api.openweathermap.org/data/2.5/forecast?id=6947041&cnt=15&units=metric&APPID=";
+const String endpoint = "http://api.openweathermap.org/data/2.5/weather?id=6947041&units=metric&APPID=";
 const String key = "ebf1fe041a7eabcc11f8e1bc1641d10d";
  
 void setup() {
@@ -44,7 +44,7 @@ void setup() {
 }
  
 void loop() {
-  if(millis() > del + 60000){
+  if(millis() > del + 30000){
     del = millis();
     if ((WiFi.status() == WL_CONNECTED)) { //Check the current connection status
        HTTPClient http;
@@ -57,14 +57,8 @@ void loop() {
              
             DynamicJsonDocument doc(61440);
             deserializeJson(doc, payload);
-            
-            for(int i = 0; i < doc["list"].size(); i ++){
-              String date = doc["list"][i]["dt_txt"];
-              String d = doc["list"][i]["weather"][0]["description"];
-              Serial.println(date);
-              Serial.println(d);
-              
-            }
+            String d = doc["weather"][0]["description"];
+            cString = d;
           }
 
      
@@ -75,7 +69,8 @@ void loop() {
   matrix->fillScreen(0);
   matrix->setCursor(x, 0);
   matrix->print(cString);
-  if(--x < -36) {
+  int len = (cString.length()*7)*-1;
+  if(--x < len) {
     x = matrix->width();
     
   }
