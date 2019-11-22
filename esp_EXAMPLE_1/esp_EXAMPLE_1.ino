@@ -6,7 +6,7 @@
 
 
 // Network credentials
-const char* ssid = "labLAN";
+const char* ssid = "largePrinter";
 const char* password = "password";
 //other variables
 const int ledPin = 13;
