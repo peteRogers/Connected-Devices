@@ -1,23 +1,40 @@
 #include <WiFi.h>
 #include <WebSocketsServer.h>
- 
+
+/*
 // Constants
-const char* ssid = "VM981001-2G";
-const char* password = "susieAmy";
+const char* ssid = "largePrinter";
+const char* password = "password";
  
 // Globals
+WebSocketsServer webSocket = WebSocketsServer(80);
+
+*/
+
+const char* ssid     = "ESP32-Access-Point";
+const char* password = "password";
 WebSocketsServer webSocket = WebSocketsServer(80);
 
 void setup() {
   // Start Serial port
   Serial.begin(115200);
+  Serial1.begin(115200);
   // Connect to access point
   Serial.println("Connecting");
+  /**
   WiFi.begin(ssid, password);
   while ( WiFi.status() != WL_CONNECTED ) {
     delay(500);
     Serial.print(".");
   }
+
+  **/
+    WiFi.softAP(ssid, password);
+
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(IP);
+
   // Print our IP address
   Serial.println("Connected!");
   Serial.print("My IP address: ");
@@ -26,7 +43,10 @@ void setup() {
   // Start WebSocket server and assign callback
   webSocket.begin();
   webSocket.onEvent(onWebSocketEvent);
- 
+  //Serial1.println("#0AA100");
+  //Serial1.println("#0AD15");
+  Serial1.println("#0SD5400");
+  Serial1.println("#0EM0");
 }
  
 // Called when receiving any WebSocket message
@@ -57,6 +77,9 @@ void onWebSocketEvent(uint8_t num,
     case WStype_TEXT:
       //webSocket.sendTXT(num, ".");
       Serial.printf("[%u] Text: %s\n", num, payload);
+      Serial1.printf("#0D%s", payload);
+      Serial1.println();
+      
       
       break;
  
@@ -78,4 +101,6 @@ void loop() {
  
   // Look for and handle WebSocket data
   webSocket.loop();
+ 
+  
 }
