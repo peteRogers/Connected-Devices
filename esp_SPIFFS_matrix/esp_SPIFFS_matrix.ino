@@ -19,7 +19,7 @@ int cy = 0;
 FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT + NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
 
 // Replace with your network credentials
-const char* ssid = "labLAN";
+const char* ssid = "212B";
 const char* password = "password";
 
 

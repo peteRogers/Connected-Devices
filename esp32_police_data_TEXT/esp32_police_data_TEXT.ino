@@ -13,11 +13,10 @@ int x    = mw;
 int pass = 0;
 CRGB matrixleds[NUMMATRIX];
 FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
-const char* ssid = "labLAN";
+const char* ssid = "212B";
 const char* password =  "password";
 String cString = "";
-const String endpoint = "http://api.openweathermap.org/data/2.5/forecast?id=6947041&cnt=5&units=metric&APPID=";
-const String key = "ebf1fe041a7eabcc11f8e1bc1641d10d";
+
 
 long del = -60000;
 
@@ -61,6 +60,9 @@ void loop() {
             String s = v["legislation"];
             Serial.println(e);
             Serial.println(s);
+            cString = e;
+            cString +="...";
+            cString +=s;
               }
           }
      
@@ -75,7 +77,8 @@ void loop() {
   matrix->fillScreen(0);
   matrix->setCursor(x, 0);
   matrix->print(cString);
-  if(--x < -36) {
+   int len = (cString.length()*7)*-1;
+  if(--x < len) {
     x = matrix->width();
     
   }
