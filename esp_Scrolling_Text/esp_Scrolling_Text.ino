@@ -2,7 +2,21 @@
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include "SPIFFS.h"
-#include <ESP32Servo.h>
+#include <Adafruit_GFX.h>
+#include <FastLED.h>
+#include <FastLED_NeoMatrix.h>
+
+//matrix stuff
+#define PIN 21
+#define mw 8 //amount of pixels width
+#define mh 8 //amount of pixels height
+#define NUMMATRIX (mw*mh)
+int x    = mw;
+int pass = 0;
+String cString = "";
+CRGB matrixleds[NUMMATRIX];
+FastLED_NeoMatrix *matrix = new FastLED_NeoMatrix(matrixleds, mw, mh, mw/8, 1, NEO_MATRIX_TOP + NEO_MATRIX_RIGHT + NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE );
+
 
 
 // Network credentials
@@ -22,7 +36,13 @@ void setup(){
   // Serial port for debugging purposes
   Serial.begin(115200);
   pinMode(ledPin, OUTPUT);
-  
+
+
+  //start matrix
+    FastLED.addLeds<NEOPIXEL,PIN>(matrixleds, NUMMATRIX); 
+  matrix->begin();
+  matrix->setTextWrap(false);
+  matrix->setBrightness(255);
   
   Serial.println("started");
   // Initialize SPIFFS
@@ -63,6 +83,7 @@ void setup(){
   server.on("/off", HTTP_GET, [](AsyncWebServerRequest *request){
     digitalWrite(ledPin, LOW);    
     request->send(SPIFFS, "/index.html", String(), false, processor);
+    
   });
 
   
@@ -72,13 +93,26 @@ void setup(){
   server.on("/message", HTTP_GET, [] (AsyncWebServerRequest *request) {
       inputMessage = request->getParam("input1")->value();
       Serial.println(inputMessage);
+      cString = inputMessage;
+      request->send(SPIFFS, "/index.html", String(), false, processor);
+
+      
   });
   // Start server
   server.begin();
 }
  
 void loop(){
-  
+   matrix->fillScreen(0);
+  matrix->setCursor(x, 0);
+  matrix->print(cString);
+   int len = (cString.length()*7)*-1;
+  if(--x < len) {
+    x = matrix->width();
+    
+  }
+  matrix->show();
+  delay(50);
 }
 
 
